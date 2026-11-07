@@ -26,6 +26,16 @@ public class ModuleSelectionManager : MonoBehaviour
 public GameObject module2ChallengePanel;
 public GameObject module2OpenChallengeButton;
 
+     [Header("Module 3 UI")]
+public GameObject module3ControlPanel;
+
+[Header("Module 3 Code Panel")]
+public GameObject module3CodePanel;
+
+[Header("Module 3 Challenge")]
+public GameObject module3ChallengePanel;
+public GameObject module3OpenChallengeButton;
+
     private int currentModule = 0;
 
     private void Start()
@@ -99,6 +109,18 @@ public GameObject module2OpenChallengeButton;
 
 if (module2OpenChallengeButton != null)
     module2OpenChallengeButton.SetActive(moduleNumber == 2);
+
+    if (module3ControlPanel != null)
+    module3ControlPanel.SetActive(moduleNumber == 3);
+
+    if (module3CodePanel != null)
+    module3CodePanel.SetActive(moduleNumber == 3);
+
+    if (module3ChallengePanel != null)
+    module3ChallengePanel.SetActive(false);
+
+if (module3OpenChallengeButton != null)
+    module3OpenChallengeButton.SetActive(moduleNumber == 3);
     }
 
 
@@ -142,5 +164,17 @@ if (module2OpenChallengeButton != null)
     module2OpenChallengeButton.SetActive(false);
 
         Debug.Log("Returned to Module Selection Menu.");
+
+        if (module3ControlPanel != null)
+    module3ControlPanel.SetActive(false);
+
+    if (module3CodePanel != null)
+    module3CodePanel.SetActive(false);
+
+    if (module3ChallengePanel != null)
+    module3ChallengePanel.SetActive(false);
+
+if (module3OpenChallengeButton != null)
+    module3OpenChallengeButton.SetActive(false);
     }
 }

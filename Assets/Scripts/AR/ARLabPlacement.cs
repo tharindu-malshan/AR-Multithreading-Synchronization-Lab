@@ -22,7 +22,6 @@ public class ARLabPlacement : MonoBehaviour
 
     public bool HasPlacedLab => placedLab != null;
 
-    // Called when a learning module is selected
     public void EnablePlacement(int moduleNumber)
     {
         DisablePlacement();
@@ -32,11 +31,10 @@ public class ARLabPlacement : MonoBehaviour
 
         Debug.Log(
             "Module " + selectedModule +
-            " selected. Tap an AR plane to place the lab."
+            " selected. Tap AR plane to place lab."
         );
     }
 
-    // Called when BACK TO MODULES is clicked
     public void DisablePlacement()
     {
         placementAllowed = false;
@@ -48,23 +46,17 @@ public class ARLabPlacement : MonoBehaviour
             placedLab = null;
         }
 
-        Debug.Log("AR Lab removed. Placement disabled.");
+        Debug.Log("AR Lab removed.");
     }
 
-    void Update()
+    private void Update()
     {
-        // Do not place a lab before selecting a module
-        if (!placementAllowed)
-            return;
-
-        // Allow only one lab at a time
-        if (HasPlacedLab)
+        if (!placementAllowed || HasPlacedLab)
             return;
 
         if (!TryGetPointerPress(out Vector2 screenPosition))
             return;
 
-        // Ignore UI button clicks
         if (EventSystem.current != null &&
             EventSystem.current.IsPointerOverGameObject())
             return;
@@ -82,8 +74,10 @@ public class ARLabPlacement : MonoBehaviour
             float cameraYRotation = 0f;
 
             if (Camera.main != null)
+            {
                 cameraYRotation =
                     Camera.main.transform.eulerAngles.y;
+            }
 
             placedLab = Instantiate(
                 labPrefab,
@@ -97,7 +91,7 @@ public class ARLabPlacement : MonoBehaviour
 
             Debug.Log(
                 "Module " + selectedModule +
-                " AR Lab placed successfully!"
+                " placed successfully."
             );
         }
     }
@@ -113,13 +107,18 @@ public class ARLabPlacement : MonoBehaviour
         Transform module2 =
             placedLab.transform.Find("Module2_Concurrent");
 
+        Transform module3 =
+            placedLab.transform.Find("Module3_RaceCondition");
+
         if (module1 != null)
             module1.gameObject.SetActive(selectedModule == 1);
 
         if (module2 != null)
             module2.gameObject.SetActive(selectedModule == 2);
 
-        // Reset the selected module's simulation
+        if (module3 != null)
+            module3.gameObject.SetActive(selectedModule == 3);
+
         if (selectedModule == 1)
         {
             ThreadSimulationManager manager =
@@ -136,6 +135,15 @@ public class ARLabPlacement : MonoBehaviour
             if (manager != null)
                 manager.ResetSimulation();
         }
+
+        else if (selectedModule == 3)
+{
+    RaceConditionSimulationManager manager =
+        placedLab.GetComponent<RaceConditionSimulationManager>();
+
+    if (manager != null)
+        manager.ResetSimulation();
+}
     }
 
     private bool TryGetPointerPress(out Vector2 position)

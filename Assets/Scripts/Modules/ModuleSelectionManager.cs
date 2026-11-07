@@ -36,6 +36,9 @@ public GameObject module3CodePanel;
 public GameObject module3ChallengePanel;
 public GameObject module3OpenChallengeButton;
 
+[Header("Module 4 UI")]
+public GameObject module4ControlPanel;
+
     private int currentModule = 0;
 
     private void Start()
@@ -121,6 +124,9 @@ if (module2OpenChallengeButton != null)
 
 if (module3OpenChallengeButton != null)
     module3OpenChallengeButton.SetActive(moduleNumber == 3);
+
+    if (module4ControlPanel != null)
+    module4ControlPanel.SetActive(moduleNumber == 4);
     }
 
 
@@ -176,5 +182,8 @@ if (module2OpenChallengeButton != null)
 
 if (module3OpenChallengeButton != null)
     module3OpenChallengeButton.SetActive(false);
+
+    if (module4ControlPanel != null)
+    module4ControlPanel.SetActive(false);
     }
 }

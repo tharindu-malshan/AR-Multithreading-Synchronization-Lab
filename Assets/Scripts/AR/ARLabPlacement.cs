@@ -96,55 +96,65 @@ public class ARLabPlacement : MonoBehaviour
         }
     }
 
-    private void ConfigureSelectedModule()
-    {
-        if (placedLab == null)
-            return;
-
-        Transform module1 =
-            placedLab.transform.Find("Module1_Lifecycle");
-
-        Transform module2 =
-            placedLab.transform.Find("Module2_Concurrent");
-
-        Transform module3 =
-            placedLab.transform.Find("Module3_RaceCondition");
-
-        if (module1 != null)
-            module1.gameObject.SetActive(selectedModule == 1);
-
-        if (module2 != null)
-            module2.gameObject.SetActive(selectedModule == 2);
-
-        if (module3 != null)
-            module3.gameObject.SetActive(selectedModule == 3);
-
-        if (selectedModule == 1)
-        {
-            ThreadSimulationManager manager =
-                placedLab.GetComponent<ThreadSimulationManager>();
-
-            if (manager != null)
-                manager.ResetSimulation();
-        }
-        else if (selectedModule == 2)
-        {
-            ConcurrentExecutionManager manager =
-                placedLab.GetComponent<ConcurrentExecutionManager>();
-
-            if (manager != null)
-                manager.ResetSimulation();
-        }
-
-        else if (selectedModule == 3)
+   
+private void ConfigureSelectedModule()
 {
-    RaceConditionSimulationManager manager =
-        placedLab.GetComponent<RaceConditionSimulationManager>();
+    if (placedLab == null)
+        return;
 
-    if (manager != null)
-        manager.ResetSimulation();
-}
+    Transform module1 =
+        placedLab.transform.Find("Module1_Lifecycle");
+
+    Transform module2 =
+        placedLab.transform.Find("Module2_Concurrent");
+
+    Transform module3 =
+        placedLab.transform.Find("Module3_RaceCondition");
+
+    Transform module4 =
+        placedLab.transform.Find("Module4_Mutex");
+
+    // Show only the selected module
+    if (module1 != null)
+        module1.gameObject.SetActive(selectedModule == 1);
+
+    if (module2 != null)
+        module2.gameObject.SetActive(selectedModule == 2);
+
+    if (module3 != null)
+        module3.gameObject.SetActive(selectedModule == 3);
+
+    if (module4 != null)
+        module4.gameObject.SetActive(selectedModule == 4);
+
+    // Reset selected simulation
+    if (selectedModule == 1)
+    {
+        ThreadSimulationManager manager =
+            placedLab.GetComponent<ThreadSimulationManager>();
+
+        if (manager != null)
+            manager.ResetSimulation();
     }
+    else if (selectedModule == 2)
+    {
+        ConcurrentExecutionManager manager =
+            placedLab.GetComponent<ConcurrentExecutionManager>();
+
+        if (manager != null)
+            manager.ResetSimulation();
+    }
+    else if (selectedModule == 3)
+    {
+        RaceConditionSimulationManager manager =
+            placedLab.GetComponent<RaceConditionSimulationManager>();
+
+        if (manager != null)
+            manager.ResetSimulation();
+    }
+
+    // Module 4 simulation manager will be added later.
+}
 
     private bool TryGetPointerPress(out Vector2 position)
     {

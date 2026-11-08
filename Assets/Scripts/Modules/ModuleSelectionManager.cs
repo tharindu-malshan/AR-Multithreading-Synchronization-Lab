@@ -46,6 +46,15 @@ public GameObject module4CodePanel;
 public GameObject module4ChallengePanel;
 public GameObject module4OpenChallengeButton;
 
+[Header("Module 5 UI")]
+public GameObject module5ControlPanel;
+
+[Header("Module 5 Code Panel")]
+public GameObject module5CodePanel;
+
+[Header("Module 5 Challenge")]
+public GameObject module5OpenChallengeButton;
+
     private int currentModule = 0;
 
     private void Start()
@@ -143,6 +152,17 @@ if (module3OpenChallengeButton != null)
 
 if (module4OpenChallengeButton != null)
     module4OpenChallengeButton.SetActive(moduleNumber == 4);
+
+    if (module5ControlPanel != null)
+    module5ControlPanel.SetActive(moduleNumber == 5);
+
+    if (module5CodePanel != null)
+    module5CodePanel.SetActive(moduleNumber == 5);
+
+    if (module5OpenChallengeButton != null)
+{
+    module5OpenChallengeButton.SetActive(moduleNumber == 5);
+}
     }
 
 
@@ -210,5 +230,16 @@ if (module3OpenChallengeButton != null)
 
 if (module4OpenChallengeButton != null)
     module4OpenChallengeButton.SetActive(false);
+
+    if (module5ControlPanel != null)
+    module5ControlPanel.SetActive(false);
+
+    if (module5CodePanel != null)
+    module5CodePanel.SetActive(false);
+
+    if (module5OpenChallengeButton != null)
+{
+    module5OpenChallengeButton.SetActive(false);
+}
     }
 }

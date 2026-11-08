@@ -114,6 +114,8 @@ private void ConfigureSelectedModule()
     Transform module4 =
         placedLab.transform.Find("Module4_Mutex");
 
+    Transform module5 = placedLab.transform.Find("Module5_Semaphore");    
+
     // Show only the selected module
     if (module1 != null)
         module1.gameObject.SetActive(selectedModule == 1);
@@ -126,6 +128,17 @@ private void ConfigureSelectedModule()
 
     if (module4 != null)
         module4.gameObject.SetActive(selectedModule == 4);
+
+    if (module5 != null)
+{
+    module5.gameObject.SetActive(selectedModule == 5);
+}    
+
+         Transform sharedMemory =
+    placedLab.transform.Find("SharedMemory_Unit");
+
+if (sharedMemory != null)
+    sharedMemory.gameObject.SetActive(selectedModule != 5);
 
     // Reset selected simulation
     if (selectedModule == 1)

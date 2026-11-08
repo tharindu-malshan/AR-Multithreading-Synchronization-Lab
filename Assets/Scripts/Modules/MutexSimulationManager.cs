@@ -9,6 +9,12 @@ public class MutexSimulationManager : MonoBehaviour
     [SerializeField] private TMP_Text mutexLabel;
     [SerializeField] private TMP_Text sharedCounterText;
 
+    private MutexVisualFeedback mutexVisual;
+    private CriticalSectionVisualFeedback criticalVisual;
+    private ThreadExecutionAnimator threadAnimator;
+
+    private Module4CodeHighlighter codeHighlighter;
+
     private int sharedCounter = 0;
     private int currentStep = 0;
 
@@ -18,17 +24,20 @@ public class MutexSimulationManager : MonoBehaviour
     private string threadAState = "READY";
     private string threadBState = "READY";
 
-    private MutexVisualFeedback visualFeedback;
+    private void Awake()
+    {
+        mutexVisual = GetComponent<MutexVisualFeedback>();
+
+        criticalVisual =
+            GetComponent<CriticalSectionVisualFeedback>();
+
+        threadAnimator = GetComponent<ThreadExecutionAnimator>();
+    }
 
     private void Start()
     {
         ResetSimulation();
     }
-
-    private void Awake()
-{
-    visualFeedback = GetComponent<MutexVisualFeedback>();
-}
 
     public void ResetSimulation()
     {
@@ -41,19 +50,27 @@ public class MutexSimulationManager : MonoBehaviour
         threadAState = "READY";
         threadBState = "READY";
 
-        if (visualFeedback != null)
-    visualFeedback.ShowUnlocked();
+        if (mutexVisual != null)
+            mutexVisual.ShowUnlocked();
+
+        if (criticalVisual != null)
+            criticalVisual.ShowIdle();
+
+        if (threadAnimator != null)
+            threadAnimator.ResetAnimations();
 
         UpdateDisplay("Simulation ready. Mutex is unlocked.");
+
+        Module4CodeHighlighter highlighter = FindCodeHighlighter();
+
+if (highlighter != null)
+    highlighter.ShowReady();
     }
 
     public void NextStep()
     {
         if (currentStep >= 7)
-        {
-            UpdateDisplay("Simulation completed. Final counter = 2.");
             return;
-        }
 
         currentStep++;
 
@@ -64,12 +81,18 @@ public class MutexSimulationManager : MonoBehaviour
                 lockOwner = "THREAD A";
                 threadAState = "RUNNING";
 
+                if (mutexVisual != null)
+                    mutexVisual.ShowLockedByA();
+
+                if (criticalVisual != null)
+                    criticalVisual.ShowThreadA();
+
+                if (threadAnimator != null)
+                    threadAnimator.AnimateThreadA();
+
                 UpdateDisplay(
                     "Thread A acquired the mutex lock."
                 );
-
-                if (visualFeedback != null)
-                    visualFeedback.ShowLockedByA();  
                 break;
 
             case 2:
@@ -83,11 +106,13 @@ public class MutexSimulationManager : MonoBehaviour
 
             case 3:
                 sharedCounter++;
-                threadAState = "RUNNING";
+
+                if (threadAnimator != null)
+                    threadAnimator.AnimateThreadA();
 
                 UpdateDisplay(
-                    "Thread A entered the critical section " +
-                    "and updated the shared counter."
+                    "Thread A updated the shared counter " +
+                    "inside the critical section."
                 );
                 break;
 
@@ -96,12 +121,15 @@ public class MutexSimulationManager : MonoBehaviour
                 lockOwner = "NONE";
                 threadAState = "COMPLETED";
 
+                if (mutexVisual != null)
+                    mutexVisual.ShowUnlocked();
+
+                if (criticalVisual != null)
+                    criticalVisual.ShowIdle();
+
                 UpdateDisplay(
                     "Thread A released the mutex lock."
                 );
-
-                if (visualFeedback != null)
-                visualFeedback.ShowUnlocked();
                 break;
 
             case 5:
@@ -109,21 +137,29 @@ public class MutexSimulationManager : MonoBehaviour
                 lockOwner = "THREAD B";
                 threadBState = "RUNNING";
 
+                if (mutexVisual != null)
+                    mutexVisual.ShowLockedByB();
+
+                if (criticalVisual != null)
+                    criticalVisual.ShowThreadB();
+
+                if (threadAnimator != null)
+                    threadAnimator.AnimateThreadB();
+
                 UpdateDisplay(
                     "Thread B acquired the mutex lock."
                 );
-
-                if (visualFeedback != null)
-                    visualFeedback.ShowLockedByB();
                 break;
 
             case 6:
                 sharedCounter++;
-                threadBState = "RUNNING";
+
+                if (threadAnimator != null)
+                    threadAnimator.AnimateThreadB();
 
                 UpdateDisplay(
-                    "Thread B entered the critical section " +
-                    "and updated the shared counter."
+                    "Thread B updated the shared counter " +
+                    "inside the critical section."
                 );
                 break;
 
@@ -132,14 +168,25 @@ public class MutexSimulationManager : MonoBehaviour
                 lockOwner = "NONE";
                 threadBState = "COMPLETED";
 
+                if (mutexVisual != null)
+                    mutexVisual.ShowUnlocked();
+
+                if (criticalVisual != null)
+                    criticalVisual.ShowIdle();
+
                 UpdateDisplay(
                     "Thread B released the mutex. " +
                     "Both updates were saved successfully."
                 );
-                if (visualFeedback != null)
-    visualFeedback.ShowUnlocked();
                 break;
         }
+
+        Module4CodeHighlighter highlighter = FindCodeHighlighter();
+
+if (highlighter != null)
+{
+    highlighter.HighlightStep(currentStep, sharedCounter);
+}
     }
 
     private void UpdateDisplay(string message)
@@ -160,15 +207,20 @@ public class MutexSimulationManager : MonoBehaviour
         }
 
         if (mutexLabel != null)
-        {
-            mutexLabel.text =
-                "MUTEX\n" + mutexState;
-        }
+            mutexLabel.text = "MUTEX\n" + mutexState;
 
         if (sharedCounterText != null)
-        {
-            sharedCounterText.text =
-                "COUNTER: " + sharedCounter;
-        }
+            sharedCounterText.text = "COUNTER: " + sharedCounter;
     }
+
+    private Module4CodeHighlighter FindCodeHighlighter()
+{
+    if (codeHighlighter == null)
+    {
+        codeHighlighter =
+            FindFirstObjectByType<Module4CodeHighlighter>();
+    }
+
+    return codeHighlighter;
+}
 }

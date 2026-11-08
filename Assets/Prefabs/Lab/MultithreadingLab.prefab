@@ -4688,6 +4688,7 @@ GameObject:
   - component: {fileID: 6521652722477734457}
   - component: {fileID: 1004339952236906868}
   - component: {fileID: 140260119282236568}
+  - component: {fileID: 3870612593074890972}
   m_Layer: 0
   m_Name: MultithreadingLab
   m_TagString: Untagged
@@ -4838,6 +4839,22 @@ MonoBehaviour:
   unlockedMaterial: {fileID: 2100000, guid: c102b6630c83e7a41a16714da56e114b, type: 2}
   threadAMaterial: {fileID: 2100000, guid: 79b57c21d172d4a468d930889c876cbf, type: 2}
   threadBMaterial: {fileID: 2100000, guid: 879a1c0ddc90ff048803f14c514ff45c, type: 2}
+--- !u!114 &3870612593074890972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8860325009648879078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36177e17c914c654f92416e5d43d4df1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CriticalSectionVisualFeedback
+  criticalSectionRenderer: {fileID: 5826764241934024107}
+  idleMaterial: {fileID: 2100000, guid: 5e23ce5b7d7c03d4091f465002069b95, type: 2}
+  threadAMaterial: {fileID: 2100000, guid: 6269d827a498fa94eb34a2f6a9dc7ea5, type: 2}
+  threadBMaterial: {fileID: 2100000, guid: 8ef223c7d3910e24abf7c0e9d7199c86, type: 2}
 --- !u!1 &8915054244287649418
 GameObject:
   m_ObjectHideFlags: 0
